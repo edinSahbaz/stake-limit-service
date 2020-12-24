@@ -1,0 +1,26 @@
+{
+  "name": "stake-limit-service",
+  "version": "1.0.0",
+  "description": "Recruitment task",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edinSahbaz/stake-limit-service.git"
+  },
+  "author": "Edin Šahbaz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edinSahbaz/stake-limit-service/issues"
+  },
+  "homepage": "https://github.com/edinSahbaz/stake-limit-service#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
