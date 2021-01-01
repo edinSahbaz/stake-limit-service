@@ -1,10 +1,15 @@
-const db = require("../config/databaseConfig");
+const logger = require("../config/logger");
+const pool = require("./../config/databaseConfig");
 
-const connect_to_service = (req, res) => {
-  db.query("SELECT * FROM Ticket", (err, result) => {
-    if (err) throw err;
+const connectToService = async (req, res) => {
+  sql = "SELECT * FROM TICKET";
+  pool.query(sql, (err, result) => {
+    if (err) logger.error(err);
+
     res.send(result);
   });
 };
 
-module.exports = { connect_to_service };
+module.exports = {
+  connectToService,
+};

@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const logger = require("./config/logger");
 
 // Initializing express app
 const app = express();
@@ -7,10 +8,20 @@ const app = express();
 // Initializing dotenv config
 dotenv.config();
 
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 // Routes setup
-const index = require("./routes/stakeService");
-app.use("/api/v1/stakeService", index);
+var baseRoute = "/api/v1/stake-limit-service";
+const service = require("./routes/stakeService");
+const configuration = require("./routes/configuration");
+
+app.use(baseRoute, service);
+app.use(`${baseRoute}/configuration`, configuration);
 
 // Server setup
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, console.log(`Server running on port ${PORT}...`));
+app.listen(PORT, logger.info(`Server running on port ${PORT}`));
