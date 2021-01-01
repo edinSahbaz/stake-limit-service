@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+const logger = require("./../config/logger");
 
 // DB Config
 config = {
@@ -6,16 +7,19 @@ config = {
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DB,
+  connectionLimit: 300,
+  multipleStatements: true,
 };
 
-// Create DB connection
-const connection = mysql.createConnection(config);
+// MySql connection pool
+const pool = mysql.createPool(config);
 
-// Connect to DB
-connection.connect((err) => {
-  if (err) throw err;
+pool.getConnection((err, connection) => {
+  if (err) logger.error(err);
 
-  console.log("MySql connected...");
+  if (connection) connection.release();
+
+  return;
 });
 
-module.exports = connection;
+module.exports = pool;
