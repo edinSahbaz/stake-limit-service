@@ -8,6 +8,7 @@ const app = express();
 // Initializing dotenv config
 dotenv.config();
 
+// Body parser
 app.use(
   express.urlencoded({
     extended: true,
