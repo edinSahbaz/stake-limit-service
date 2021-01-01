@@ -2,13 +2,11 @@ const mysql = require("mysql");
 const logger = require("./../config/logger");
 
 // DB Config
-config = {
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DB,
-  connectionLimit: 300,
-  multipleStatements: true,
+const config = {
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
 };
 
 // MySql connection pool
