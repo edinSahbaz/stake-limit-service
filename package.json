@@ -5,7 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node src/server",
-    "dev": "nodemon src/server"
+    "dev": "nodemon src/server",
+    "test": "jest --watch --verbose"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
@@ -26,6 +30,8 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.6",
+    "supertest": "^6.0.1"
   }
 }

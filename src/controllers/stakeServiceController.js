@@ -2,7 +2,7 @@ const dbQuery = require("./../util/dbQuery");
 const { v4: uuidv4 } = require("uuid");
 const { machineId, machineIdSync } = require("node-machine-id");
 
-async function connectToService(req, res, next) {
+async function sendTicket(req, res, next) {
   const stake = req.body.stake;
 
   if (stake <= 0) {
@@ -18,5 +18,5 @@ async function connectToService(req, res, next) {
 }
 
 module.exports = {
-  connectToService,
+  sendTicket,
 };
