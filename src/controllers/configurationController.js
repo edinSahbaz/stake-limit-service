@@ -1,3 +1,4 @@
+const Configuration = require("../models/Configuration");
 const dbQuery = require("./../util/dbQuery");
 
 async function getConfiguration(req, res, next) {
@@ -6,7 +7,24 @@ async function getConfiguration(req, res, next) {
 }
 
 async function updateConfiguration(req, res, next) {
-  const { timeDuration, stakeLimit, hotPercentage, restrictionExpires } = req.body;
+  const {
+    timeDuration,
+    stakeLimit,
+    hotPercentage,
+    restrictionExpires,
+  } = req.body;
+
+  const config = new Configuration(
+    timeDuration,
+    stakeLimit,
+    hotPercentage,
+    restrictionExpires
+  );
+
+  if (!config.validateInput()) {
+    res.sendStatus(422);
+    return;
+  }
 
   sql = `UPDATE configuration 
          SET timeDuration = ${timeDuration}, stakeLimit = ${stakeLimit}, 
