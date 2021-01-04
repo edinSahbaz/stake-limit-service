@@ -5,10 +5,10 @@ services:
     build: ./db
     environment:
       MYSQL_DATABASE: sls_db
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD:
       MYSQL_USER: root
       MYSQL_PASSWORD:
-      DATABASE_HOST: db
+      MYSQL_HOST: localhost
     restart: always
     ports:
       - "3307:3306"
@@ -17,10 +17,10 @@ services:
     build: .
     environment:
       MYSQL_DATABASE: sls_db
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD:
       MYSQL_USER: root
       MYSQL_PASSWORD:
-      DATABASE_HOST: db
+      MYSQL_HOST: localhost
     ports:
       - "3001:3000"
     depends_on:

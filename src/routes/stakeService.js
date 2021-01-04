@@ -3,8 +3,8 @@ const app = express.Router();
 
 const stakeServiceController = require("../controllers/stakeServiceController");
 
-// GET
+// POST
 // /api/v1/stake-limit-service
-app.get("/", stakeServiceController.connectToService);
+app.post("/", stakeServiceController.connectToService);
 
 module.exports = app;
