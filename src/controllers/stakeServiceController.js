@@ -7,7 +7,7 @@ async function sendTicket(req, res, next) {
   const stake = req.body.stake;
 
   // Validating stake
-  if (isNaN(stake) || stake < 0) {
+  if (isNaN(stake) || stake <= 0) {
     res.sendStatus(422);
     return;
   }
