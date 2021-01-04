@@ -13,8 +13,7 @@ async function connectToService(req, res, next) {
   const id = uuidv4();
   const deviceId = await machineId({ original: true });
 
-  sql = `INSERT INTO ticket(id, deviceId, stake) VALUES("${id}","${deviceId}", ${stake})`;
-
+  let sql = `INSERT INTO ticket(id, deviceId, stake) VALUES("${id}","${deviceId}", ${stake});`;
   dbQuery(sql, res, "POST");
 }
 
