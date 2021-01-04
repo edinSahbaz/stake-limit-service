@@ -22,7 +22,7 @@ const configuration = require("./routes/configuration");
 app.use(baseRoute, service);
 app.use(`${baseRoute}/configuration`, configuration);
 
-// Handling non-existant routes
+// Handling non-existent routes
 app.use((req, res, next) => {
   res.sendStatus(404);
 });
