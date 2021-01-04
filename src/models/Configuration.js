@@ -9,7 +9,7 @@ class Configuration {
   }
 
   validateInput() {
-    var isValid = true;
+    let isValid = true;
 
     Object.values(this).forEach((element, index) => {
       let min = configurationLimits[index].min;
