@@ -1,4 +1,3 @@
-const logger = require("../config/logger");
 const configurationLimits = require("../util/configurationLimits");
 
 class Configuration {
@@ -16,12 +15,7 @@ class Configuration {
       let min = configurationLimits[index].min;
       let max = configurationLimits[index].max;
 
-      if (isValid && (element < min || element > max)) {
-        logger.error(
-          `${element} is out of range. Enter the value between ${min} and ${max}`
-        );
-        isValid = false;
-      }
+      if (isValid && (element < min || element > max)) isValid = false;
     });
 
     return isValid;
