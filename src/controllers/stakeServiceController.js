@@ -1,20 +1,31 @@
+const Status = require("../models/Status");
+const Ticket = require("../models/Ticket");
 const dbQuery = require("./../util/dbQuery");
-const { v4: uuidv4 } = require("uuid");
-const { machineId, machineIdSync } = require("node-machine-id");
+const dbRecordsCheck = require("./../util/dbRecordsCheck");
 
 async function sendTicket(req, res, next) {
   const stake = req.body.stake;
 
-  if (stake <= 0) {
+  // Validating stake
+  if (isNaN(stake) || stake < 0) {
     res.sendStatus(422);
     return;
   }
 
-  const id = uuidv4();
-  const deviceId = await machineId({ original: true });
+  // Generating new ticket
+  const { id, deviceId } = new Ticket(stake);
 
-  let sql = `INSERT INTO ticket(id, deviceId, stake) VALUES("${id}","${deviceId}", ${stake});`;
-  dbQuery(sql, res, "POST");
+  // Inserting new ticket into the DB
+  let sql;
+  sql = `INSERT INTO ticket(id, deviceId, stake) VALUES("${id}","${deviceId}", ${stake});`;
+  await dbQuery(sql, "INSERT");
+
+  // Checking if machine is already in DB and inesrting it if it's not
+  if (await dbRecordsCheck(deviceId))
+    sql = `UPDATE device SET stakes = stakes + ${stake} WHERE id = "${deviceId}"`;
+  else sql = `INSERT INTO device (id, stakes) VALUES("${deviceId}",${stake});`;
+
+  res.send(await dbQuery(sql, "INSERT/UPDATE"));
 }
 
 module.exports = {

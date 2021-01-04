@@ -1,19 +1,22 @@
 const pool = require("./../config/databaseConfig");
 const logger = require("./../config/logger");
 
-async function query(sql, res, method = "SELECT") {
-  pool.query(sql, (err, result) => {
-    if (err) {
-      logger.error(err);
-      res.sendStatus(500);
-      return;
-    }
+async function query(sql, method = "SELECT") {
+  let data = new Promise((resolve, reject) => {
+    pool.query(sql, (err, result) => {
+      if (err) {
+        logger.error(err);
+        return resolve(500);
+      }
 
-    logger.info("Query executed");
+      logger.info("Query executed");
 
-    if (method === "SELECT") res.send(result);
-    else res.sendStatus(200);
+      if (method === "SELECT") resolve(result);
+      else resolve(200);
+    });
   });
+
+  return data;
 }
 
 module.exports = query;

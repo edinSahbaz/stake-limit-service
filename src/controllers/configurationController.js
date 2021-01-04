@@ -2,12 +2,13 @@ const Configuration = require("../models/Configuration");
 const dbQuery = require("./../util/dbQuery");
 
 async function getConfiguration(req, res, next) {
-  const sql = "SELECT * FROM CONFIGURATION";
+  const sql = `SELECT * FROM configuration`;
 
-  dbQuery(sql, res);
+  res.send(await dbQuery(sql));
 }
 
 async function updateConfiguration(req, res, next) {
+  // Getting params from body
   const {
     timeDuration,
     stakeLimit,
@@ -15,6 +16,7 @@ async function updateConfiguration(req, res, next) {
     restrictionExpires,
   } = req.body;
 
+  // Creating Configuration model
   const config = new Configuration(
     timeDuration,
     stakeLimit,
@@ -22,17 +24,19 @@ async function updateConfiguration(req, res, next) {
     restrictionExpires
   );
 
+  // Validating params through model
   if (!config.validateInput()) {
     res.sendStatus(422);
     return;
   }
 
+  // Updating configuration in DB
   const sql = `UPDATE configuration 
          SET timeDuration = ${timeDuration}, stakeLimit = ${stakeLimit}, 
          hotPercentage = ${hotPercentage}, restrictionExpires = ${restrictionExpires} 
          WHERE id = 1`;
 
-  dbQuery(sql, res, "UPDATE");
+  res.send(await dbQuery(sql, "UPDATE"));
 }
 
 module.exports = {
