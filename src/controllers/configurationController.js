@@ -36,7 +36,7 @@ async function updateConfiguration(req, res, next) {
          hotPercentage = ${hotPercentage}, restrictionExpires = ${restrictionExpires} 
          WHERE id = 1`;
 
-  res.send(await dbQuery(sql, "UPDATE"));
+  res.sendStatus(await dbQuery(sql, "UPDATE"));
 }
 
 module.exports = {

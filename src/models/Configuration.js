@@ -1,4 +1,4 @@
-const configurationLimits = require("../util/configurationLimits");
+const configurationLimits = require("../config/configurationLimits");
 
 class Configuration {
   constructor(timeDuration, stakeLimit, hotPercentage, restrictionExpires) {

@@ -1,7 +1,7 @@
 const Status = require("../models/Status");
 const Ticket = require("../models/Ticket");
-const dbQuery = require("./../util/dbQuery");
-const dbRecordsCheck = require("./../util/dbRecordsCheck");
+const statusMonitor = require("./../util/statusMonitor");
+const stakeServiceDBQueries = require("./../util/stakeServiceDBQueries");
 
 async function sendTicket(req, res, next) {
   const stake = req.body.stake;
@@ -15,17 +15,20 @@ async function sendTicket(req, res, next) {
   // Generating new ticket
   const { id, deviceId } = new Ticket(stake);
 
-  // Inserting new ticket into the DB
-  let sql;
-  sql = `INSERT INTO ticket(id, deviceId, stake) VALUES("${id}","${deviceId}", ${stake});`;
-  await dbQuery(sql, "INSERT");
+  // Checking if device is blocked
+  const status = new Status();
+  const isBlocked = await statusMonitor.checkBlocked(deviceId);
 
-  // Checking if machine is already in DB and inesrting it if it's not
-  if (await dbRecordsCheck(deviceId))
-    sql = `UPDATE device SET stakes = stakes + ${stake} WHERE id = "${deviceId}"`;
-  else sql = `INSERT INTO device (id, stakes) VALUES("${deviceId}",${stake});`;
+  if (isBlocked) {
+    res.send(status.getStatus(status.BLOCKED));
+    return;
+  }
 
-  res.send(await dbQuery(sql, "INSERT/UPDATE"));
+  // Performing DB queries
+  await stakeServiceDBQueries.execute(id, deviceId, stake);
+
+  // Sending status
+  res.send(status.getStatus(status.OK));
 }
 
 module.exports = {
