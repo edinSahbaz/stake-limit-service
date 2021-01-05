@@ -44,6 +44,12 @@ async function restrictionExpired(deviceId) {
     hour12: false,
   });
   const currentTime = await covnertTimeToSeconds(currentTimeStamp);
+
+  // If check is controlled the day after restriction is set, add 24 hours to current time
+  if (currentTime < blockedTimeStamp) {
+    currentTime += 84000;
+  }
+
   const timeDifference = currentTime - blockedTimeStamp;
 
   if (timeDifference < restrictionExpires) return false;
