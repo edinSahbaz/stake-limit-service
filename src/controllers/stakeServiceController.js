@@ -2,6 +2,7 @@ const Status = require("../models/Status");
 const Ticket = require("../models/Ticket");
 const statusMonitor = require("./../util/statusMonitor");
 const stakeServiceDBQueries = require("./../util/stakeServiceDBQueries");
+const hotPercentageCheck = require("./../util/hotPercentageCheck");
 
 async function sendTicket(req, res, next) {
   const stake = req.body.stake;
@@ -27,8 +28,13 @@ async function sendTicket(req, res, next) {
   // Performing DB queries
   await stakeServiceDBQueries.execute(id, deviceId, stake);
 
+  const response = await hotPercentageCheck(deviceId);
+
+  if (response.status === status.BLOCKED)
+    await statusMonitor.blockDevice(deviceId);
+
   // Sending status
-  res.send(status.getStatus(status.OK));
+  res.send(response);
 }
 
 module.exports = {

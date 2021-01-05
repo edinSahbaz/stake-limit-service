@@ -1,4 +1,3 @@
-const Status = require("../models/Status");
 const dbQuery = require("./../util/dbQuery");
 const covnertTimeToSeconds = require("./convertTimeToSeconds");
 const stakeServiceDBQueries = require("./stakeServiceDBQueries");
@@ -25,15 +24,17 @@ async function checkBlocked(deviceId) {
 }
 
 async function restrictionExpired(deviceId) {
+  // Getting time duration for restriction to expire
+  let sql = "SELECT restrictionExpires FROM configuration WHERE id=1";
+  let res = await dbQuery(sql);
+  const { restrictionExpires } = res[0];
+
+  if (restrictionExpires === 0) return false;
+
   // Getting the timestamp when device was blocked
   sql = `SELECT blockedTimeStamp FROM device WHERE id="${deviceId}"`;
   res = await dbQuery(sql);
   const blockedTimeStamp = await covnertTimeToSeconds(res[0].blockedTimeStamp);
-
-  // Getting time duration for restriction to expire
-  let sql = "SELECT timeDuration FROM configuration WHERE id=1";
-  let res = await dbQuery(sql);
-  const restrExpTime = res[0].timeDuration;
 
   // Getting curent time and converting to seconds
   const currentTimeStamp = new Date().toLocaleTimeString([], {
@@ -45,7 +46,7 @@ async function restrictionExpired(deviceId) {
   const currentTime = await covnertTimeToSeconds(currentTimeStamp);
   const timeDifference = currentTime - blockedTimeStamp;
 
-  if (timeDifference < restrExpTime) return false;
+  if (timeDifference < restrictionExpires) return false;
   else {
     await removeRestriction(deviceId);
     return true;
@@ -53,8 +54,13 @@ async function restrictionExpired(deviceId) {
 }
 
 async function removeRestriction(deviceId) {
-  const sql = `UPDATE device SET blocked=0 WHERE id = "${deviceId}"`;
+  const sql = `UPDATE device SET stakes=0, blocked=0, blockedTimeStamp=NULL WHERE id = "${deviceId}"`;
   await dbQuery(sql, "UPDATE");
 }
 
-module.exports = { checkBlocked };
+async function blockDevice(deviceId) {
+  const sql = `UPDATE device SET blocked=1, blockedTimeStamp=CURRENT_TIMESTAMP WHERE id = "${deviceId}"`;
+  await dbQuery(sql, "UPDATE");
+}
+
+module.exports = { checkBlocked, blockDevice };
