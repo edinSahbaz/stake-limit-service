@@ -4,36 +4,35 @@ const covnertTimeToSeconds = require("./convertTimeToSeconds");
 const stakeServiceDBQueries = require("./stakeServiceDBQueries");
 
 async function checkBlocked(deviceId) {
+  // Checking if device exists
   const deviceExists = await stakeServiceDBQueries.deviceExists(deviceId);
 
   if (!deviceExists) return false;
 
+  // Checking if device is blocked
   const sql = `SELECT blocked FROM device WHERE id="${deviceId}"`;
   const res = await dbQuery(sql);
-
   const blocked = !!res[0].blocked;
+
+  if (!blocked) return false;
+
+  // Checking if device restriction can be lifted
   const hasExpired = await restrictionExpired(deviceId);
 
-  if (blocked && !hasExpired) {
-    return true;
-  }
+  if (!hasExpired) return true;
 
   return false;
 }
 
 async function restrictionExpired(deviceId) {
   // Getting the timestamp when device was blocked
-  let sql = `SELECT blockedTimeStamp FROM device WHERE id="${deviceId}"`;
-  let res = await dbQuery(sql);
-  let blockedTimeStamp = res[0].blockedTimeStamp;
-
-  if (blockedTimeStamp === null) return true;
-
-  blockedTimeStamp = await covnertTimeToSeconds(res[0].blockedTimeStamp);
+  sql = `SELECT blockedTimeStamp FROM device WHERE id="${deviceId}"`;
+  res = await dbQuery(sql);
+  const blockedTimeStamp = await covnertTimeToSeconds(res[0].blockedTimeStamp);
 
   // Getting time duration for restriction to expire
-  sql = "SELECT timeDuration FROM configuration WHERE id=1";
-  res = await dbQuery(sql);
+  let sql = "SELECT timeDuration FROM configuration WHERE id=1";
+  let res = await dbQuery(sql);
   const restrExpTime = res[0].timeDuration;
 
   // Getting curent time and converting to seconds
