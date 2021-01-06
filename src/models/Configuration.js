@@ -12,6 +12,8 @@ class Configuration {
     let isValid = true;
 
     Object.values(this).forEach((element, index) => {
+      if (isNaN(element)) isValid = false;
+
       let min = configurationLimits[index].min;
       let max = configurationLimits[index].max;
 

@@ -1,4 +1,3 @@
-CREATE DATABASE sls_db;
 CREATE TABLE ticket (
   id VARCHAR(36) PRIMARY KEY NOT NULL,
   deviceId VARCHAR(36) NOT NULL,
@@ -17,7 +16,7 @@ CREATE TABLE device (
   stakes DOUBLE NOT NULL,
   blocked TINYINT(1) DEFAULT 0 NOT NULL,
   blockedTimeStamp TIME NULL DEFAULT NULL,
-  registeredTimeStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+  registeredTimeStamp TIME NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 INSERT INTO
   configuration(
