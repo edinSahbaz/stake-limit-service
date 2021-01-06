@@ -1,19 +1,3 @@
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 # Stake Limit Service API
 
 This project contains the source code of Stake Limit Service API. This was a recruitment task for NSoft.
@@ -42,8 +26,7 @@ Then visit the downloaded repository and install dependencies:
 npm install
 ```
 
-Set up DB with scripts in ./db folder and start MySql server. 
-const API_KEY = 'ENTER YOUR API';
+Set up DB with scripts included in ./db folder and modify .env file with your variables. 
 
 After setting up .env file, DB and installing dependecies, start the API: 
 
@@ -58,3 +41,61 @@ To run unit testing, please navigate to root folder and run following command:
 ```shell
 npm test
 ```
+
+## API Documentation
+
+### Configuration routes
+
+API works on configuration that id set by default on creation of DB.
+
+### To get configuration
+### Request
+
+    GET /api/v1/stake-limit-service/configuration
+
+### Response
+    
+    HTTP 200 OK
+    
+    {
+      timeDuration: 300,
+      stakeLimit: 1000,
+      hotPercentage: 75,
+      restrictionExpires: 300
+    }
+    
+    ### Request
+
+    GET /api/v1/stake-limit-service/configuration
+
+### Request
+
+    PUT /api/v1/stake-limit-service/configuration
+    
+    body:
+    { 
+      timeDuration: 300,
+      stakeLimit: 1000,
+      hotPercentage: 75,
+      restrictionExpires: 300
+    }
+    
+### Response
+    
+    HTTP 200 OK
+    
+### Request
+
+    POST /api/v1/stake-limit-service/
+    
+    body:
+    { 
+      stake: 100,
+    }
+    
+### Response
+    
+    {
+      status: "{status}"
+    }
+    
