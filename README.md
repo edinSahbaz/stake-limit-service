@@ -48,12 +48,12 @@ npm test
 
 API works on configuration that id set by default on creation of DB.
 
-### To get configuration
-### Request
+#### To get configuration
+##### Request
 
     GET /api/v1/stake-limit-service/configuration
 
-### Response
+##### Response
     
     HTTP 200 OK
     
@@ -64,11 +64,9 @@ API works on configuration that id set by default on creation of DB.
       restrictionExpires: 300
     }
     
-    ### Request
+#### To update configuration
 
-    GET /api/v1/stake-limit-service/configuration
-
-### Request
+##### Request
 
     PUT /api/v1/stake-limit-service/configuration
     
@@ -80,11 +78,15 @@ API works on configuration that id set by default on creation of DB.
       restrictionExpires: 300
     }
     
-### Response
+##### Response
     
     HTTP 200 OK
     
-### Request
+### Stake service routes
+    
+#### To send ticket for processing
+
+##### Request
 
     POST /api/v1/stake-limit-service/
     
@@ -93,7 +95,7 @@ API works on configuration that id set by default on creation of DB.
       stake: 100,
     }
     
-### Response
+##### Response
     
     {
       status: "{status}"
