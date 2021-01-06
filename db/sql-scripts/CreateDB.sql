@@ -1,1 +1,0 @@
-CREATE DATABASE sls_db;

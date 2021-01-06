@@ -7,4 +7,4 @@ ENV MYSQL_PASSWORD password
 
 EXPOSE 3307
 
-COPY ./sql-scripts /docker-entrypoint-initdb.d
+COPY ./init.sql /docker-entrypoint-initdb.d
