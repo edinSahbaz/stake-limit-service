@@ -4,7 +4,7 @@ const dbQuery = require("./../util/dbQuery");
 async function getConfiguration(req, res, next) {
   const sql = `SELECT * FROM configuration`;
 
-  res.send(await dbQuery(sql));
+  res.sendStatus(await dbQuery(sql));
 }
 
 async function updateConfiguration(req, res, next) {
