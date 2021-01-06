@@ -34,6 +34,14 @@ After setting up .env file, DB and installing dependecies, start the API:
 npm start
 ```
 
+### Running on Docker
+
+To create and run docker container, navigate downloaded repository and run command:
+
+```shell
+docker-compose up
+```
+
 ### Unit testing
 
 To run unit testing, please navigate to root folder and run following command:
