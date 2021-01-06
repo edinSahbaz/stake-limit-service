@@ -9,8 +9,6 @@ async function query(sql, method = "SELECT") {
         return resolve(500);
       }
 
-      logger.info("Query executed");
-
       if (method === "SELECT") resolve(result);
       else resolve(200);
     });

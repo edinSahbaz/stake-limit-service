@@ -1,5 +1,6 @@
 const dbQuery = require("./../util/dbQuery");
 const covnertTimeToSeconds = require("./convertTimeToSeconds");
+const getCurrentTimeInSec = require("./getCurrentTimeInSec");
 const stakeServiceDBQueries = require("./stakeServiceDBQueries");
 
 async function checkBlocked(deviceId) {
@@ -36,14 +37,8 @@ async function restrictionExpired(deviceId) {
   res = await dbQuery(sql);
   const blockedTimeStamp = await covnertTimeToSeconds(res[0].blockedTimeStamp);
 
-  // Getting curent time and converting to seconds
-  const currentTimeStamp = new Date().toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-  const currentTime = await covnertTimeToSeconds(currentTimeStamp);
+  // Get current time in seconds
+  let currentTime = await getCurrentTimeInSec();
 
   // If check is controlled the day after restriction is set, add 24 hours to current time
   if (currentTime < blockedTimeStamp) {
