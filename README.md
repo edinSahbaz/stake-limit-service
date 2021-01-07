@@ -10,7 +10,9 @@ This project contains the source code of Stake Limit Service API. This was a rec
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/en/), JavaScript runtime.
-- [MySql](), Database Service.
+- [MySql](https://www.mysql.com/), Database Service.
+##### To run on Docker
+- [Docker](https://www.docker.com/), Open platform for developing, shipping, and running applications.
 
 ### Running locally
 
